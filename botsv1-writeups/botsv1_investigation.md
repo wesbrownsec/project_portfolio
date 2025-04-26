@@ -54,7 +54,7 @@ This confirmed a successful defacement, with the attacker staging their payload 
 
 **Evidence**
 
-![Server File Download](../screenshots/file_download.png)
+![Server File Download](./screenshots/file_download.png)
 
 ---
 
@@ -74,7 +74,7 @@ This indicated shared infrastructure likely used for broader attack campaigns.
 
 **Evidence**
 
-![OSINT](../screenshots/virustotal_po1s0n1vy.png)
+![OSINT](./screenshots/virustotal_po1s0n1vy.png)
 
 ---
 
@@ -94,7 +94,7 @@ This clearly indicated an automated brute force attack using a Python script.
 
 **Evidence**
 
-![Brute Force Attempting](../screenshots/brute_force_attempt.png)
+![Brute Force Attempting](./screenshots/brute_force_attempt.png)
 
 ---
 
@@ -114,7 +114,7 @@ Sorting events by newest first identified the successful login event:
 
 **Evidence**
 
-![Correct Password](../screenshots/successful_password.png)
+![Correct Password](./screenshots/successful_password.png)
 
 #### **Malware Upload**
 
@@ -122,9 +122,6 @@ Reviewing successful POST requests revealed the attacker uploaded an executable 
 
 * **Filename**: `3791.exe`
 
-**Evidence**
-
-![malicious file execution](../screenshots/malicious_file_3791.exe.png)
 
 ---
 
@@ -139,6 +136,10 @@ Findings:
 * **MD5 Hash**: `aae3f5a29935e6abcc2c2754d12a9af0`
 
 VirusTotal analysis confirmed the file as a **Trojan**, with capabilities matching credential theft and C2 communication.
+
+**Evidence**
+
+![Malicious file execution](./screenshots/malicious_file_3791.png)
 
 ---
 
