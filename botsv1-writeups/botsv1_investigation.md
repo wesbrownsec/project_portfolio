@@ -22,7 +22,7 @@ Initial web traffic analysis revealed scanning behaviour. Investigation of the `
 
 This indicated an external party conducting automated vulnerability assessments against the organization's infrastructure.
 
-**Evidence** [Acuentix Vulnerability Scanner](./screenshots/vulnerability_scanner.png)
+**Evidence:** [Acuentix Vulnerability Scanner](./screenshots/vulnerability_scanner.png)
 
 #### **Target Identification**
 
@@ -50,7 +50,7 @@ Reviewing these events showed the server had downloaded a suspicious file:
 
 This confirmed a successful defacement, with the attacker staging their payload on an external server.
 
-**Evidence** [Server File Download](./screenshots/file_download.png)
+**Evidence:** [Server File Download](./screenshots/file_download.png)
 
 ---
 
@@ -68,7 +68,7 @@ Using VirusTotal, I identified additional domains hosted on this IP, including a
 
 This indicated shared infrastructure likely used for broader attack campaigns.
 
-**Evidence** [OSINT](./screenshots/virustotal_po1s0n1vy.png)
+**Evidence:** [OSINT](./screenshots/virustotal_po1s0n1vy.png)
 
 ---
 
@@ -86,7 +86,7 @@ Subsequent Splunk analysis showed a surge of POST requests to the compromised we
 
 This clearly indicated an automated brute force attack using a Python script.
 
-**Evidence** [Brute Force Attempting](./screenshots/brute_force_attempt.png)
+**Evidence:** [Brute Force Attempting](./screenshots/brute_force_attempt.png)
 
 ---
 
@@ -104,7 +104,7 @@ Sorting events by newest first identified the successful login event:
 
 * **Time Elapsed Between Discovery and Compromise**: 92.17 seconds
 
-**Evidence** [Correct Password](./screenshots/successful_password.png)
+**Evidence:** [Correct Password](./screenshots/successful_password.png)
 
 #### **Malware Upload**
 
@@ -126,7 +126,7 @@ Findings:
 
 VirusTotal analysis confirmed the file as a **Trojan**, with capabilities matching credential theft and C2 communication.
 
-**Evidence** [Malicious file execution](./screenshots/malicious_file_3791.exe.png)
+**Evidence:** [Malicious file execution](./screenshots/malicious_file_3791.exe.png)
 
 ---
 
