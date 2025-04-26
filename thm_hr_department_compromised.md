@@ -13,7 +13,7 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 * **Impersonation Account:** Detected a typo-squatted account, Amel1a, spoofing legitimate marketing user Amelia.  
 * **Suspicious User Activity:** Chris.fort (HR) executed processes such as taskkill.exe and clip.exe, not typical for end-users.  
 * **LOLBin Abuse:** Haroon used certutil.exe to download a file from controlc.com, indicating Living-off-the-Land Binary (LOLBin) abuse.  
-* **MITRE ATT\&CK Mapping:** `Attacker used credential impersonation (T1078.004), LOLBins (T1218.010), and C2 (T1105)`
+* **MITRE ATT\&CK Mapping:** Attacker used credential impersonation (T1078.004), LOLBins (T1218.010), and C2 (T1105)
 
 ---
 
@@ -46,7 +46,7 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
   * taskkill.exe, clip.exe (scripting and automation tools)   
   * backgroundTaskHost.exe (also used by Diana, but Chris had no productivity apps)  
 * Lacked normal user behavior (e.g., browser, Office apps).  
-* **Attempted Detection of Scheduled Task Binaries:**  
+* *Attempted Detection of Scheduled Task Binaries:*  
   * ProcessName IN ("schtasks.exe", "svchost.exe", "taskeng.exe")  
 * No strong indicators here, pivoted back to broader process review.
 
@@ -91,8 +91,11 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 | Tactic | Technique | Description |
 
 | Execution | T1059.003 | certutil.exe used to download a payload |
+
 | Persistence | T1078.004 | Spoofed account Amel1a for access |
+
 | Defense Evasion | T1218.010 | LOLBin abuse with certutil.exe |
+
 | Command and Control | T1105 | Connection to external C2 (controlc\[.\]com) |      
 
 ---
