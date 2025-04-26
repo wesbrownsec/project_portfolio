@@ -99,12 +99,12 @@ tcp.port \== 8000 || tcp.port \== 8080
 
 #### **6\. MITRE ATT\&CK Mapping**
 
-| Tactic | Technique | Relevant Activity |
-
-| Command & Control | T1071.001 | HTTP C2 over port 8000 and 8080 |
-| Credential Access | T1555 | TrickBot credential theft modules |
-| Defense Evasion | T1055/T1059 | TrickBot process spawning |
-| Impact | T1496 | CPU hijacking from mining |
+| Tactic             | Technique      | Relevant Activity                     |
+|:-------------------|:---------------|:--------------------------------------|
+| Command & Control  | T1071.001       | HTTP C2 over port 8000 and 8080        |
+| Credential Access  | T1555           | TrickBot credential theft modules     |
+| Defense Evasion    | T1055 / T1059    | TrickBot process spawning              |
+| Impact             | T1496           | CPU hijacking from mining              |
 
 ---
 
