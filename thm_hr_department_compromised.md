@@ -88,15 +88,13 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 
 ### **🧰 MITRE ATT\&CK Mappings**
 
-| Tactic | Technique | Description |
+  | Tactic               | Technique  | Description                                |
+|:---------------------|:-----------|:-------------------------------------------|
+| Execution            | T1059.003  | certutil.exe used to download a payload    |
+| Persistence          | T1078.004  | Spoofed account Amel1a for access           |
+| Defense Evasion      | T1218.010  | LOLBin abuse with certutil.exe              |
+| Command and Control  | T1105       | Connection to external C2 (controlc[.]com)  |
 
-| Execution | T1059.003 | certutil.exe used to download a payload |
-
-| Persistence | T1078.004 | Spoofed account Amel1a for access |
-
-| Defense Evasion | T1218.010 | LOLBin abuse with certutil.exe |
-
-| Command and Control | T1105 | Connection to external C2 (controlc\[.\]com) |      
 
 ---
 
