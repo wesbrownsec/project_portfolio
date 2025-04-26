@@ -22,7 +22,7 @@ Initial web traffic analysis revealed scanning behaviour. Investigation of the `
 
 This indicated an external party conducting automated vulnerability assessments against the organization's infrastructure.
 
-**Evidence:** [Acuentix Vulnerability Scanner](./screenshots/vulnerability_scanner.png)
+**Evidence:** [Acuentix Vulnerability Scanner Use](./screenshots/vulnerability_scanner.png)
 
 #### **Target Identification**
 
@@ -126,7 +126,7 @@ Findings:
 
 VirusTotal analysis confirmed the file as a **Trojan**, with capabilities matching credential theft and C2 communication.
 
-**Evidence:** [Malicious file execution](./screenshots/malicious_file_3791.exe.png)
+**Evidence:** [Malicious File Execution](./screenshots/malicious_file_3791.exe.png)
 
 ---
 
