@@ -139,7 +139,7 @@ VirusTotal analysis confirmed the file as a **Trojan**, with capabilities matchi
 
 **Evidence**
 
-![Malicious file execution](./screenshots/malicious_file_3791.png)
+![Malicious file execution](./screenshots/malicious_file_3791.exe.png)
 
 ---
 
