@@ -24,7 +24,7 @@ This indicated an external party conducting automated vulnerability assessments 
 
 **Evidence**
 
-![Acuentix Vulnerability Scanner](../screenshots/vulnerability_scanner.png)
+![Acuentix Vulnerability Scanner](./screenshots/vulnerability_scanner.png)
 
 #### **Target Identification**
 
