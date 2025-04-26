@@ -64,7 +64,7 @@ This confirmed a successful defacement, with the attacker staging their payload 
 
 Further investigation into the download server showed:
 
-* **Resolved IP Address**: 22.23.63.114
+* **Resolved IP Address**: 23.22.63.114
 
 Using VirusTotal, I identified additional domains hosted on this IP, including a leetspeak domain:
 
