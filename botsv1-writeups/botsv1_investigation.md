@@ -132,17 +132,14 @@ VirusTotal analysis confirmed the file as a **Trojan**, with capabilities matchi
 
 ### **Observed MITRE ATT&CK Techniques**
 
-| Tactic | Technique ID | Specific Description |
+| Tactic               | Technique ID | Specific Description                                                                              |
+|:---------------------|:-------------|:--------------------------------------------------------------------------------------------------|
+| Initial Access        | T1190        | External brute-force login attempts against imreallynotbatman.com via HTTP POST traffic.          |
+| Credential Access     | T1110        | 412 unique password attempts identified, using scripted automation (Python-urllib/2.7).           |
+| Execution             | T1059.003    | Execution of 3791.exe malware payload observed through Sysmon Event ID 1 process creation logs.   |
+| Persistence           | T1078        | Successful reuse of brute-forced credentials (batman) to log into the target system.              |
+| Command and Control   | T1071.001    | Malware payload and C2 staging communication over standard HTTP protocols to external servers.    |
 
-| Initial Access | T1190 | External brute-force login attempts against `imreallynotbatman.com` via HTTP POST traffic. |
-
-| Credential Access | T1110 | 412 unique password attempts identified, using scripted automation (Python-urllib/2.7). |
-
-| Execution | T1059.003 | Execution of `3791.exe` malware payload observed through Sysmon Event ID 1 process creation logs. |
-
-| Persistence | T1078 | Successful reuse of brute-forced credentials (`batman`) to log into the target system. |
-
-| Command and Control | T1071.001 | Malware payload and C2 staging communication over standard HTTP protocols to external servers. |
 
 ---
 
