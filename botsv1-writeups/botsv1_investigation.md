@@ -22,6 +22,10 @@ Initial web traffic analysis revealed scanning behaviour. Investigation of the `
 
 This indicated an external party conducting automated vulnerability assessments against the organization's infrastructure.
 
+**Evidence**
+
+![Acuentix Vulnerability Scanner](../screenshots/vulnerability_scanner.png)
+
 #### **Target Identification**
 
 Pivoting from the scanner traffic, I identified the web server under attack:
@@ -48,6 +52,10 @@ Reviewing these events showed the server had downloaded a suspicious file:
 
 This confirmed a successful defacement, with the attacker staging their payload on an external server.
 
+**Evidence**
+
+![Server File Download](../screenshots/file_download.png)
+
 ---
 
 ### **Infrastructure Mapping & Attribution**
@@ -63,6 +71,10 @@ Using VirusTotal, I identified additional domains hosted on this IP, including a
 * **Leetspeak Domain**: `po1s0n1vy.com`
 
 This indicated shared infrastructure likely used for broader attack campaigns.
+
+**Evidence**
+
+![OSINT](../screenshots/virustotal_po1s0n1vy.png)
 
 ---
 
@@ -100,11 +112,19 @@ Sorting events by newest first identified the successful login event:
 
 * **Time Elapsed Between Discovery and Compromise**: 92.17 seconds
 
+**Evidence**
+
+![Correct Password](../screenshots/successful_password.png)
+
 #### **Malware Upload**
 
 Reviewing successful POST requests revealed the attacker uploaded an executable file:
 
 * **Filename**: `3791.exe`
+
+**Evidence**
+
+![malicious file execution](../screenshots/malicious_file_3791.exe.png)
 
 ---
 
