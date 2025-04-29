@@ -39,7 +39,7 @@ tcp.port \== 22
 
 * Navigated to: `Statistics > Conversations`
 
-* Total data transferred: **333MB** across SSH sessions.
+* Total data transferred: **1131MB** across SSH sessions.
 
 #### **3\. PCAP Two: TrickBot Attribution**
 
