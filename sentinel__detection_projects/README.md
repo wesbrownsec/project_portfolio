@@ -6,6 +6,8 @@ This project simulates a progressive detection engineering and incident response
 
 Rather than showcasing one-off detections or synthetic labs, this project presents a structured progression:
 
+* **Day 1**: Lab configuration and Sentinel log ingestion.
+
 * **Day 2**: Foundational hands-on with Sentinel, raw log parsing, and alert building
 
 * **Day 3**: Multi-stage attack simulation and SOC-style investigation
@@ -18,20 +20,22 @@ This work is designed to reflect the tasks and thinking expected from a detectio
 
 ## **Repository Structure**
 
-  
-`/sentinel-detection-project/`  
-`├── README.md                      # Project overview, objectives, skills demonstrated`  
-`├── day2_procdump_detection/`  
-`│   ├── README.md                  # Baseline detection: Procdump → LSASS`  
-`│   └── detection.kql              # Raw KQL query for the rule`  
-`├── day3_attack_chain/`  
-`│   ├── README.md                  # Multi-stage triage: Certutil → Schtasks → Procdump`  
-`│   └── detection.kql              # Detection logic used in investigation`  
-`├── day4_regsvr32_soar/`  
-`│   ├── README.md                  # SOAR enrichment workflow: Regsvr32 + VirusTotal`  
-`│   ├── detection.kql              # Trigger rule for the Logic App`  
-`│   ├── logic_app_diagram.png      # Diagram of the SOAR branching logic`  
-`│   └── logicapp.json              # Logic App export (infrastructure-as-code)`
+```
+/sentinel-detection-project/
+├── README.md                      # Project overview, objectives, skills demonstrated
+├── day1_lab_configuration.md      # Outline of the lab environment
+├── day2_procdump_detection/
+│   ├── README.md                  # Baseline detection: Procdump → LSASS
+│   └── detection.kql              # Raw KQL query for the rule
+├── day3_attack_chain/
+│   ├── README.md                  # Multi-stage triage: Certutil → Schtasks → Procdump
+│   └── detection.kql              # Detection logic used in investigation
+├── day4_regsvr32_soar/
+│   ├── README.md                  # SOAR enrichment workflow: Regsvr32 + VirusTotal
+│   ├── detection.kql              # Trigger rule for the Logic App
+│   ├── logic_app_diagram.png      # Diagram of the SOAR branching logic
+│   └── logicapp.json              # Logic App export (infrastructure-as-code)
+```
 
 ---
 
