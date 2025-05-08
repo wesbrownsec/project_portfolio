@@ -3,13 +3,13 @@
 
 ---
 
-### **🔍 Summary**
+### **Summary**
 
 This investigation combines Wireshark packet analysis with open-source intelligence (OSINT) to trace potential malware activity across three packet captures. The exercise spanned SSH data transfers, behavioral profiling, and the attribution of IP addresses to known malware families including TrickBot and cryptominers.
 
 ---
 
-### **🔍 Key Findings**
+### **Key Findings**
 
 * **SSH Transfer Detection:** Identified SSH-based data exfiltration between internal IP `10.0.9.171` and a remote host.
 
@@ -21,7 +21,7 @@ This investigation combines Wireshark packet analysis with open-source intellige
 
 ---
 
-### **🛠️ Investigation Steps**
+### **Investigation Steps**
 
 #### **1\. PCAP One: SSH Data Transfer**
 
@@ -108,7 +108,7 @@ tcp.port \== 8000 || tcp.port \== 8080
 
 ---
 
-### **🔥 Risk Implications**
+### **Risk Implications**
 
 * **TrickBot**:
 
@@ -124,7 +124,7 @@ tcp.port \== 8000 || tcp.port \== 8080
 
 ---
 
-### **💡 Lessons Learned**
+### **Lessons Learned**
 
 * **OSINT Validation is Crucial**: Attribution and risk classification are strengthened through multi-source OSINT.
 
