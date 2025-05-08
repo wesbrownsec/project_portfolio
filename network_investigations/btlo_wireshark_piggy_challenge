@@ -15,9 +15,9 @@ This investigation combines Wireshark packet analysis with open-source intellige
 
 * **TrickBot Infrastructure:** Confirmed presence of TrickBot-linked C2 IPs using VirusTotal and Hybrid Analysis.
 
-* **Cryptominer Behavior:** Flagged persistent communication over ports 8000/8080 as linked to crypto-mining operations.
+* **Cryptominer Behaviour:** Flagged persistent communication over ports 8000/8080 as linked to crypto-mining operations.
 
-* **C2 Behavior:** Traffic patterns matched MITRE ATT\&CK's web-based command and control activity.
+* **C2 Behaviour:** Traffic patterns matched MITRE ATT\&CK's web-based command and control activity.
 
 ---
 
@@ -67,7 +67,7 @@ tcp.port \== 22
 
 **Risk**: Credential theft → Lateral movement → Ransomware deployment.
 
-#### **4\. PCAP Three: Suspicious Port Behavior**
+#### **4\. PCAP Three: Suspicious Port Behaviour**
 
 **Filter Used**:
 
@@ -128,9 +128,9 @@ tcp.port \== 8000 || tcp.port \== 8080
 
 * **OSINT Validation is Crucial**: Attribution and risk classification are strengthened through multi-source OSINT.
 
-* **Wireshark Alone is Not Enough**: Behavioral validation and technique mapping require external context.
+* **Wireshark Alone is Not Enough**: Behavioural validation and technique mapping require external context.
 
-* **Attention to Anomalies Pays Off**: Low-traffic, high-port-number communication often indicates hidden behaviors.
+* **Attention to Anomalies Pays Off**: Low-traffic, high-port-number communication often indicates hidden behaviours.
 
 ---
 
