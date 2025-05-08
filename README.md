@@ -22,7 +22,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Microsoft Sentinel  
 **Focus:** Multi-stage Attack Simulation  
 **Skills:** Custom KQL detections, MITRE T1003.001, T1053.005, T1105  
-**[Write-up →](link)**
+**[Write-up →](sentinel__detection_projects/day3_attack_chain/README.md)**
 
 - Simulated an end-to-end attack chain using certutil for tool download, schtasks for persistence, and procdump for LSASS dumping.
 - Created individual detections for each stage and manually correlated them into a single incident timeline.
@@ -34,7 +34,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Splunk with Sysmon logs and VirusTotal  
 **Focus:** Full-Spectrum SOC Investigation  
 **Skills:** SPL, IOC enrichment, MITRE ATT&CK mapping, infrastructure attribution  
-**[Write-up →](link)**
+**[Write-up →](splunk_investigations/botsv1_investigations/botsv1_compromise_analysis.md)**
 
 - Investigated a simulated attack involving vulnerability scanning, brute-force login, malware upload, and host compromise.
 - Mapped attacker actions to MITRE stages and used OSINT tools to trace external infrastructure.
@@ -46,7 +46,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Wireshark and Hybrid Analysis  
 **Focus:** Network Forensics and Threat Attribution  
 **Skills:** PCAP analysis, malware attribution, MITRE mapping  
-**[Write-up →](link)**
+**[Write-up →](network_investigations/btlo_wireshark_piggy_challenge.md)**
 
 - Analysed multi-PCAP dataset for outbound SSH exfiltration and suspicious C2 traffic.
 - Identified TrickBot and cryptominer infrastructure using external validation.
@@ -58,7 +58,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Splunk  
 **Focus:** Insider Threat and Credential Abuse  
 **Skills:** Windows Event ID analysis, user baseline profiling, MITRE T1078.004, T1105  
-**[Write-up →](link)**
+**[Write-up →](splunk_investigations/thm_hr_department_compromise.md)**
 
 - Investigated suspicious process execution and a typo-squatted user account mimicking a legitimate employee.
 - Detected use of certutil.exe to download remote payloads, suggesting abuse of built-in Windows tools (LOLBins).
