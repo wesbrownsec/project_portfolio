@@ -2,13 +2,13 @@
 
 ---
 
-### **🔍 Summary**
+### **Summary**
 
 An IDS flagged suspicious process execution within the HR department. Using Windows Event ID 4688 logs ingested into Splunk, we conducted an investigation to identify signs of malicious activity and potential compromise.
 
 ---
 
-### **🔍 Key Findings**
+### **Key Findings**
 
 * **Impersonation Account:** Detected a typo-squatted account, Amel1a, spoofing legitimate marketing user Amelia.  
 * **Suspicious User Activity:** Chris.fort (HR) executed processes such as taskkill.exe and clip.exe, not typical for end-users.  
@@ -17,7 +17,7 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 
 ---
 
-### **🛠️ Investigation Steps**
+### **Investigation Steps**
 
 #### **1\. Baselining Logs**
 
@@ -72,7 +72,7 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 
 ---
 
-### **💡 Lessons Learned**
+### **Lessons Learned**
 
 #### **SOC Workflow**
 
@@ -86,7 +86,7 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 
 ---
 
-### **🧰 MITRE ATT\&CK Mappings**
+### **MITRE ATT\&CK Mappings**
 
   | Tactic               | Technique  | Description                                |
 |:---------------------|:-----------|:-------------------------------------------|
