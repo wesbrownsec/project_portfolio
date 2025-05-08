@@ -1,6 +1,6 @@
-# **🔄 Regsvr32 SOAR Workflow with VirusTotal Enrichment**
+# **Regsvr32 SOAR Workflow with VirusTotal Enrichment**
 
-## **🧠 Overview**
+## **Overview**
 
 This project simulates a medium-risk, high-noise detection scenario involving the abuse of regsvr32.exe — a trusted Windows binary often used in LOLBAS (Living Off the Land Binaries and Scripts) attacks. The goal was to detect potential misuse of regsvr32 for remote code execution, enrich the alert context via VirusTotal, and use SOAR (Security Orchestration, Automation, and Response) logic to reduce analyst workload through smart alerting and contextual decision-making.
 
@@ -8,7 +8,7 @@ Unlike previous investigations that focused on multi-stage attack chains, this p
 
 ---
 
-## **🔍 Why Regsvr32?**
+## **Why Regsvr32?**
 
 Regsvr32 is a signed Microsoft binary that allows execution of remote scripts via COM scriptlets hosted over HTTP/S. It’s abused by threat actors because:
 
@@ -24,7 +24,7 @@ The key was not just detecting it, but doing something meaningful with the alert
 
 ---
 
-## **📌 Detection Logic**
+## **Detection Logic**
 
 The detection is based on **MITRE DS0017: Process Creation**, using Windows Event ID `1`. Because my lab uses the Microsoft Monitoring Agent (MMA), logs arrive as raw XML rather than in schema-based tables — requiring field extraction via `extract()` in KQL.
 
@@ -46,7 +46,7 @@ This query identifies executions of regsvr32 where the command line includes a r
 
 ---
 
-## **🧱 Field Extraction and Triage Context**
+## **Field Extraction and Triage Context**
 
 These fields are extracted to drive enrichment and downstream decisions:
 
@@ -61,7 +61,7 @@ These fields are extracted to drive enrichment and downstream decisions:
 
 ---
 
-## **🌐 VirusTotal Integration**
+## **VirusTotal Integration**
 
 The enrichment step uses VirusTotal’s **IP reputation API**. The Logic App sends a **GET** request to:
 
@@ -79,7 +79,7 @@ This lets me enrich the alert in real-time with **actual external evidence**, no
 
 ---
 
-## **🧠 Branching Logic & Alert Flow**
+## **Branching Logic & Alert Flow**
 
 The SOAR logic applies a condition:
 
@@ -100,7 +100,7 @@ In production, this structure would prevent alert fatigue **without missing earl
 
 ---
 
-## **✉️ Email Design**
+## **Email Design**
 
 The email format is intentionally clean and analyst-friendly.
 
@@ -128,7 +128,7 @@ The subject line offers **instant triage context**; the body gives **pivot point
 
 ---
 
-## **🧠 Reflection and What I Learned**
+## **Reflection and What I Learned**
 
 This project marked my first time designing a complete SOAR workflow — not just writing detections, but building a system that takes raw alerts, enriches them with external intelligence, and produces outcomes that save time and support decision-making. It forced me to think like both a SOC analyst and a detection engineer: how to structure signals, reduce noise, and deliver relevant context to the right place at the right time.
 
@@ -142,7 +142,7 @@ Key skills I developed:
 
 ---
 
-### **💡 Ideas for Further Improvement**
+### **Ideas for Further Improvement**
 
 If I were deploying this in a production SOC, these are the changes I’d make to extend and harden the system:
 
@@ -190,7 +190,7 @@ Eventually, I’d implement a tagging or allowlisting mechanism — for example,
 
 ---
 
-### **🔚 Final Thoughts**
+### **Final Thoughts**
 
 This project wasn’t about building a perfect detection — it was about showing that I can:
 
