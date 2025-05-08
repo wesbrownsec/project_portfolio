@@ -10,7 +10,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Microsoft Sentinel and Logic Apps  
 **Focus:** Detection Engineering and Automation  
 **Skills:** KQL, MITRE T1218.010, API integration (VirusTotal), SOAR logic  
-**[Write-up →](link)**
+**[Write-up →](sentinel__detection_projects/day4_regsvr32_soar/README.md)**
 
 - Developed a full SOAR pipeline for detecting regsvr32 abuse with integrated alert enrichment using VirusTotal.
 - Designed branching logic to escalate only high-confidence alerts, reducing false positives and analyst workload.
