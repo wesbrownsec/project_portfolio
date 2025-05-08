@@ -34,7 +34,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Splunk with Sysmon logs and VirusTotal  
 **Focus:** Full-Spectrum SOC Investigation  
 **Skills:** SPL, IOC enrichment, MITRE ATT&CK mapping, infrastructure attribution  
-**[Write-up →](splunk_investigations/botsv1_investigations/botsv1_compromise_analysis.md)**
+**[Write-up →](splunk_investigations/botsv1_investigation/botsv1_compromise_analysis.md)**
 
 - Investigated a simulated attack involving vulnerability scanning, brute-force login, malware upload, and host compromise.
 - Mapped attacker actions to MITRE stages and used OSINT tools to trace external infrastructure.
