@@ -21,30 +21,18 @@ I used the Microsoft Monitoring Agent (MMA) to collect logs, which are ingested 
 
 The rule searches for executions of procdump.exe with command-line arguments referencing lsass, a strong indicator of credential dumping.
 
-kql
-
-CopyEdit
-
+```kql
 Event
-
 | where EventID \== 1
-
 | extend raw\_xml \= tostring(EventData)
-
 | extend
-
 	Image \= extract(@"\<Data Name=""Image""\>(.\*?)\</Data\>", 1, raw\_xml),
-
 	CommandLine \= extract(@"\<Data Name=""CommandLine""\>(.\*?)\</Data\>", 1, raw\_xml),
-
 	ParentImage \= extract(@"\<Data Name=""ParentImage""\>(.\*?)\</Data\>", 1, raw\_xml),
-
 	User \= extract(@"\<Data Name=""User""\>(.\*?)\</Data\>", 1, raw\_xml)
-
 | where Image has "procdump" and CommandLine has "lsass"
-
 | project TimeGenerated, Image, CommandLine, ParentImage, User
-
+```
 ---
 
 **Sentinel Rule Configuration**
