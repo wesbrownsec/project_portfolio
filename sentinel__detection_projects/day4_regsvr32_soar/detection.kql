@@ -1,0 +1,21 @@
+Event
+| where EventID == 1
+| extend raw_xml = tostring(EventData)
+| extend 
+    Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml),
+    CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml),
+    ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml),
+    User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml),
+    IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml)
+| extend 
+    ExtractedIP = extract(@"http[s]?://([^/]+)", 1, CommandLine)
+| where Image endswith "regsvr32.exe" 
+    and CommandLine has "http"
+| project 
+    TimeGenerated, 
+    User, 
+    Image, 
+    CommandLine, 
+    ParentImage, 
+    IntegrityLevel,
+    ExtractedIP
