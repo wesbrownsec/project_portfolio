@@ -1,4 +1,4 @@
-**Splunk Investigation Report: BOTS v1 Compromise Analysis**
+### **Splunk Investigation Report: BOTS v1 Compromise Analysis**
 
 ---
 
