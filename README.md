@@ -1,72 +1,86 @@
-# SOC-write-ups
+# Wesley Brown | SOC Analyst Portfolio
 
-## SOC Case Studies – Blue Team Investigations using Splunk & Wireshark
-
-This repository contains hands-on cybersecurity investigations simulating real-world SOC workflows. Each write-up demonstrates detection, analysis, and response skills aligned with the MITRE ATT&CK framework, using industry-standard tools such as Splunk, Wireshark, and OSINT platforms.
+This portfolio showcases my practical experience in threat detection, incident response, and adversary tradecraft analysis. All investigations replicate real-world SOC workflows using Splunk, Microsoft Sentinel, Wireshark, and OSINT platforms. Projects are organised by technical complexity, starting from foundational log triage to advanced detection engineering and SOAR automation.
 
 ---
 
-## Overview
+## Featured Projects (Organised by Technical Depth and Impact)
 
-These case studies reflect practical threat detection and investigation skills built through BTLO (Blue Team Labs Online), TryHackMe, and local Splunk environments. Each scenario includes:
+### 1. Microsoft Sentinel SOAR Workflow – Regsvr32 Abuse and Alert Enrichment
+**Platform:** Microsoft Sentinel and Logic Apps  
+**Focus:** Detection Engineering and Automation  
+**Skills:** KQL, MITRE T1218.010, API integration (VirusTotal), SOAR logic  
+**[Write-up →](link)**
 
-- Log analysis and suspicious behaviour detection
-- MITRE ATT&CK mapping
-- IOC development
-- Risk evaluation and threat attribution
-- Clear investigation steps and lessons learned
-
----
-
-## Investigations
-
-### 1. **Splunk Investigation: Corporate Web Server Attack (BOTS v1)**
-- **Tools:** Splunk, Windows Event Logs (Event ID 1, 4625, 4688), VirusTotal
-- **Summary:** 
-  - Full multi-stage investigation based on BOTS v1 data.
-  - Tracked external brute-force login attempts, credential abuse, malware execution (3791.exe), and C2 communication over HTTP.
-  - Built clear attack chain mapping (Initial Access → Credential Access → Execution → Persistence → C2).
-  - Detailed MITRE ATT&CK mapping, artefact extraction, IOC development, and structured evidence linking.
-- **Notes:**  
-  This case study reflects the strongest depth of detection, analysis, and reporting, showcasing advanced Splunk searching, IOC enrichment, and adversary activity tracking.
+- Developed a full SOAR pipeline for detecting regsvr32 abuse with integrated alert enrichment using VirusTotal.
+- Designed branching logic to escalate only high-confidence alerts, reducing false positives and analyst workload.
+- Emphasised contextual decision-making and automation reflecting real SOC pain points.
 
 ---
 
-### 2. Wireshark + OSINT: TrickBot & Cryptominer Traffic
-- **Tools:** Wireshark, VirusTotal, Hybrid Analysis
-- **Summary:** 
-  - Multi-PCAP analysis of C2 activity, credential theft, and crypto-miner communication using ports 8000/8080.
-  - OSINT cross-referenced with IP reputation services to attribute malware families.
+### 2. Sentinel Detection Chain – Credential Dumping via LOLBins
+**Platform:** Microsoft Sentinel  
+**Focus:** Multi-stage Attack Simulation  
+**Skills:** Custom KQL detections, MITRE T1003.001, T1053.005, T1105  
+**[Write-up →](link)**
+
+- Simulated an end-to-end attack chain using certutil for tool download, schtasks for persistence, and procdump for LSASS dumping.
+- Created individual detections for each stage and manually correlated them into a single incident timeline.
+- Demonstrated realistic detection logic and alert chaining, aligned with analyst workflows.
 
 ---
 
-### 3. Splunk Investigation: HR Department Compromise
-- **Tools:** Splunk, Windows Event Logs (Event ID 4688)
-- **Summary:** 
-  - Identified LOLBin abuse and a typo-squatted user account within HR logs.
-  - Analysis showed credential impersonation, malicious downloads via certutil.exe, and mapping to ATT&CK TTPs.
+### 3. BOTS v1 Investigation – Multi-Stage Compromise Analysis
+**Platform:** Splunk with Sysmon logs and VirusTotal  
+**Focus:** Full-Spectrum SOC Investigation  
+**Skills:** SPL, IOC enrichment, MITRE ATT&CK mapping, infrastructure attribution  
+**[Write-up →](link)**
+
+- Investigated a simulated attack involving vulnerability scanning, brute-force login, malware upload, and host compromise.
+- Mapped attacker actions to MITRE stages and used OSINT tools to trace external infrastructure.
+- Showcased complete incident reconstruction with evidence, artefact linkage, and clear defensive takeaways.
 
 ---
 
-## Skills Demonstrated
+### 4. BTLO Wireshark and OSINT Investigation – TrickBot and Cryptominer Traffic
+**Platform:** Wireshark and Hybrid Analysis  
+**Focus:** Network Forensics and Threat Attribution  
+**Skills:** PCAP analysis, malware attribution, MITRE mapping  
+**[Write-up →](link)**
 
-- Log analysis & alert triage
-- MITRE ATT&CK correlation
-- Detection of credential abuse, LOLBins, malware, and C2 traffic
-- SIEM queries and event filtering (Splunk SPL)
-- OSINT integration for IP/domain attribution
-- Structured investigation writing and professional reporting
+- Analysed multi-PCAP dataset for outbound SSH exfiltration and suspicious C2 traffic.
+- Identified TrickBot and cryptominer infrastructure using external validation.
+- Mapped observed behaviour to techniques such as credential theft, resource hijacking, and HTTP-based C2.
+
+---
+
+### 5. HR Department Compromise – Internal Threat Investigation
+**Platform:** Splunk  
+**Focus:** Insider Threat and Credential Abuse  
+**Skills:** Windows Event ID analysis, user baseline profiling, MITRE T1078.004, T1105  
+**[Write-up →](link)**
+
+- Investigated suspicious process execution and a typo-squatted user account mimicking a legitimate employee.
+- Detected use of certutil.exe to download remote payloads, suggesting abuse of built-in Windows tools (LOLBins).
+- Applied user activity baselining and detection logic for low-and-slow internal compromise scenarios.
+
+---
+
+## Core Skills Demonstrated
+
+- Detection engineering in Splunk (SPL) and Microsoft Sentinel (KQL)
+- SOC-style alert triage, incident reconstruction, and correlation
+- Application of the MITRE ATT&CK framework to adversary techniques
+- Integration of external threat intelligence sources (VirusTotal, Hybrid Analysis)
+- Construction of low-noise, high-context detection logic
+- Practical use of SOAR workflows for enrichment and automated triage
 
 ---
 
 ## About Me
 
-I’m an entry-level SOC Analyst focused on blue team operations, threat detection, and incident response.  
-I’ve completed the **Blue Team Level 1 (BTL1)** certification (95%) and **CompTIA Security+**, with a strong practical foundation in:
+I am an entry-level SOC analyst with strong practical skills in detection, investigation, and alert triage. I hold certifications in **Blue Team Level 1 (95%)** and **CompTIA Security+**, and have built a portfolio grounded in realistic adversary behaviours and end-to-end detection logic. My approach is grounded in evidence, context, and analyst-ready reporting.
 
-- SIEM (Splunk) threat hunting
-- PCAP analysis
-- Endpoint artefact investigation
-- Threat detection workflows
 
-Feel free to connect or reach out — always happy to discuss blue team tactics or threat detection methods.
+---
+
