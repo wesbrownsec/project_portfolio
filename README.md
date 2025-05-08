@@ -58,7 +58,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Splunk  
 **Focus:** Insider Threat and Credential Abuse  
 **Skills:** Windows Event ID analysis, user baseline profiling, MITRE T1078.004, T1105  
-**[Write-up →](splunk_investigations/thm_hr_department_compromise.md)**
+**[Write-up →](splunk_investigations/thm_hr_department_compromised.md)**
 
 - Investigated suspicious process execution and a typo-squatted user account mimicking a legitimate employee.
 - Detected use of certutil.exe to download remote payloads, suggesting abuse of built-in Windows tools (LOLBins).
