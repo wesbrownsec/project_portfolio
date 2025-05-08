@@ -2,13 +2,13 @@
 
 ---
 
-**🧠 Executive Summary**
+**Executive Summary**
 
 This simulated incident demonstrates a chained attack scenario where an adversary uses native Windows binaries to download a credential dumping tool, persist it via a scheduled task, and execute it at logon. The aim is to mimic low-sophistication, high-success-rate post-exploitation tradecraft — and simulate how a SOC analyst would detect, investigate, and respond to it.
 
 ---
 
-**🔗 Incident Overview: Attacker Behaviour**
+**Incident Overview: Attacker Behaviour**
 
 | Step | Adversary Action | MITRE Technique |
 | :---- | :---- | :---- |
@@ -24,7 +24,7 @@ This pattern reflects a common kill chain used in real environments where:
 
 ---
 
-**🚨 Detection Timeline**
+**Detection Timeline**
 
 | Time | Alert | Description |
 | :---- | :---- | :---- |
@@ -34,7 +34,7 @@ This pattern reflects a common kill chain used in real environments where:
 
 ---
 
-**🔍 Alert 1: Tool Ingress via certutil.exe (T1105)**
+**Alert 1: Tool Ingress via certutil.exe (T1105)**
 
 **What Happened**:  
  The attacker used certutil.exe to fetch procdump.exe from a remote host over HTTP.
@@ -50,7 +50,7 @@ This pattern reflects a common kill chain used in real environments where:
 
 ---
 
-**🔍 Alert 2: Scheduled Task Creation via schtasks.exe (T1053.005)**
+**Alert 2: Scheduled Task Creation via schtasks.exe (T1053.005)**
 
 **What Happened**:  
  Roughly 15 minutes later, the attacker created a scheduled task using schtasks.exe, launched from PowerShell.
@@ -68,7 +68,7 @@ This pattern reflects a common kill chain used in real environments where:
 
 ---
 
-**🔍 Alert 3: Procdump Execution Triggered (T1003.001)**
+**Alert 3: Procdump Execution Triggered (T1003.001)**
 
 **What Happened**:  
  At next logon, the scheduled task executed procdump.exe. It did **not** contain lsass in the command line — suggesting obfuscation or indirection.
@@ -84,7 +84,7 @@ This pattern reflects a common kill chain used in real environments where:
 
 ---
 
-**🛡️ Analyst Conclusion**
+**Analyst Conclusion**
 
 This incident reflects **intentional attacker movement across the kill chain**:
 
@@ -100,7 +100,7 @@ Even though each action could be benign in isolation, **correlation and timing**
 
 ---
 
-**🧩 Outcome**
+**Outcome**
 
 All three custom Sentinel rules triggered successfully and were **manually correlated** into a single incident.
 
