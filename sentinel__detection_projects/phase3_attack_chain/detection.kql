@@ -27,7 +27,7 @@ Scheduled Tasks detection:
   | where Image endswith "schtasks.exe"
       and ParentImage has_any ("powershell.exe", "cmd.exe")
       and CommandLine has "create"
-  | project TimeGenerated, Image, CommandLine, ParentImage, User
+  | project TimeGenerated, Image, CommandLine, ParentImage, User, IntegrityLevel
 
 Procdump detection:
 
@@ -41,4 +41,4 @@ Procdump detection:
     User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml),
     IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml)  
 | where Image has "procdump"
-  | project TimeGenerated, Image, CommandLine, ParentImage, User
+  | project TimeGenerated, Image, CommandLine, ParentImage, User, IntegrityLevel
