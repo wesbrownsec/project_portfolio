@@ -1,4 +1,4 @@
-# **Day 3: Simulated Incident – Credential Dump via LOLBins and Scheduled Task**
+# **Phase 3: Simulated Incident – Credential Dump via LOLBins and Scheduled Task**
 
 ---
 
