@@ -9,6 +9,7 @@ Certutil Detection:
       ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml),
       User = tostring(extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml)
   | where Image has "certutil"
+      and CommandLine has "http"
   | project TimeGenerated, Image, CommandLine, ParentImage, User
 
 Scheduled Tasks detection:
