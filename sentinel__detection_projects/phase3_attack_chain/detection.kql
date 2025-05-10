@@ -7,10 +7,11 @@ Certutil Detection:
       Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml),
       CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml),
       ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml),
-      User = tostring(extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml)
+      User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml),
+      IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml)
   | where Image has "certutil"
       and CommandLine has "http"
-  | project TimeGenerated, Image, CommandLine, ParentImage, User
+  | project TimeGenerated, Image, CommandLine, ParentImage, User, IntegrityLevel
 
 Scheduled Tasks detection:
 
@@ -21,7 +22,8 @@ Scheduled Tasks detection:
     Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml),
     CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml),
     ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml),
-    User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml)
+    User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml),
+    IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml)
   | where Image endswith "schtasks.exe"
       and ParentImage has_any ("powershell.exe", "cmd.exe")
       and CommandLine has "create"
@@ -36,6 +38,7 @@ Procdump detection:
     Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml),
     CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml),
     ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml),
-    User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml)
-  | where Image has "procdump"
+    User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml),
+    IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml)  
+| where Image has "procdump"
   | project TimeGenerated, Image, CommandLine, ParentImage, User
