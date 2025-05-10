@@ -1,4 +1,4 @@
-**Wireshark \+ OSINT Investigation: TrickBot & Cryptominer Traffic (BTLO Piggy Challenge)**
+# **Wireshark \+ OSINT Investigation: TrickBot & Cryptominer Traffic (BTLO Piggy Challenge)**
 *A multi-phase malware investigation using Wireshark, VirusTotal & Hybrid Analysis.*
 
 ---
