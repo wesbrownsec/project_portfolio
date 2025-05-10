@@ -4,7 +4,7 @@
 
 **Executive Summary**
 
-This simulated incident demonstrates a chained attack scenario where an adversary uses native Windows binaries to download a credential dumping tool, persist it via a scheduled task, and execute it at logon. The aim is to mimic low-sophistication, high-success-rate post-exploitation tradecraft — and simulate how a SOC analyst would detect, investigate, and respond to it.
+This simulated incident demonstrates a chained attack scenario where an adversary uses native Windows binaries to download a credential dumping tool, persist it via a scheduled task, and execute it at logon. The aim is to mimic low-sophistication, high-success-rate post-exploitation tradecraft - and simulate how a SOC analyst would detect, investigate, and respond to it.
 
 ---
 
@@ -71,7 +71,7 @@ This pattern reflects a common kill chain used in real environments where:
 **Alert 3: Procdump Execution Triggered (T1003.001)**
 
 **What Happened**:  
- At next logon, the scheduled task executed procdump.exe. It did **not** contain lsass in the command line — suggesting obfuscation or indirection.
+ At next logon, the scheduled task executed procdump.exe. It did **not** contain lsass in the command line - suggesting obfuscation or indirection.
 
 **Why It Mattered**:  
  Dumping LSASS without direct command-line indicators is a real-world tactic used to bypass basic rules. This required correlation with previous steps to confirm malicious behaviour.
