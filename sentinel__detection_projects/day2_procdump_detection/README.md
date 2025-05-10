@@ -1,4 +1,4 @@
-**Procdump Detection – Initial Hands-on with Sentinel (T1003.001)**
+# **Procdump Detection – Initial Hands-on with Sentinel (T1003.001)**
 
 This was my first hands-on experience building a detection rule in Microsoft Sentinel. Although I had prior exposure to SIEMs through Splunk, Sentinel presented a different workflow, particularly around log normalization, alert configuration, and entity mapping. My aim here wasn’t to produce a complex detection, but rather to **get familiar with the platform**, understand the ingestion and query flow, and successfully create an alert end-to-end.
 
