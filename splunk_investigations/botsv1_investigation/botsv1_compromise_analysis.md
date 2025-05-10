@@ -161,7 +161,7 @@ VirusTotal analysis confirmed the file as a **Trojan**, with capabilities matchi
 
 * VirusTotal (infrastructure OSINT)
 
-* MITRE ATT\&CK (attack behavior mapping)
+* MITRE ATT\&CK (attack behaviour mapping)
 
 ---
 
