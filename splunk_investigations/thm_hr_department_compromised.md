@@ -1,4 +1,4 @@
-**Splunk Investigation: HR Department Compromise (Event ID 4688\)**
+# **Splunk Investigation: HR Department Compromise (Event ID 4688)**
 
 ---
 
