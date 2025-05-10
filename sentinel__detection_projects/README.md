@@ -6,13 +6,13 @@ This project simulates a progressive detection engineering and incident response
 
 Rather than showcasing one-off detections or synthetic labs, this project presents a structured progression:
 
-* **Day 1**: Lab configuration and Sentinel log ingestion.
+* **Phase 1**: Lab configuration and Sentinel log ingestion.
 
-* **Day 2**: Foundational hands-on with Sentinel, raw log parsing, and alert building
+* **Phase 2**: Foundational hands-on with Sentinel, raw log parsing, and alert building
 
-* **Day 3**: Multi-stage attack simulation and SOC-style investigation
+* **Phase 3**: Multi-stage attack simulation and SOC-style investigation
 
-* **Day 4**: Enrichment and triage automation using SOAR workflows
+* **Phase 4**: Enrichment and triage automation using SOAR workflows
 
 This work is designed to reflect the tasks and thinking expected from a detection engineer or Level 1/2 SOC analyst—not a hobbyist or red teamer.
 
@@ -23,14 +23,14 @@ This work is designed to reflect the tasks and thinking expected from a detectio
 ```
 /sentinel-detection-project/
 ├── README.md                      # Project overview, objectives, skills demonstrated
-├── day1_lab_configuration.md      # Outline of the lab environment
-├── day2_procdump_detection/
+├── phase1_lab_configuration.md      # Outline of the lab environment
+├── phase2_procdump_detection/
 │   ├── README.md                  # Baseline detection: Procdump → LSASS
 │   └── detection.kql              # Raw KQL query for the rule
-├── day3_attack_chain/
+├── phase3_attack_chain/
 │   ├── README.md                  # Multi-stage triage: Certutil → Schtasks → Procdump
 │   └── detection.kql              # Detection logic used in investigation
-├── day4_regsvr32_soar/
+├── phase4_regsvr32_soar/
 │   ├── README.md                  # SOAR enrichment workflow: Regsvr32 + VirusTotal
 │   ├── detection.kql              # Trigger rule for the Logic App
 │   ├── logic_app_diagram.png      # Diagram of the SOAR branching logic
@@ -55,9 +55,9 @@ This work is designed to reflect the tasks and thinking expected from a detectio
 
 | Phase | Focus | Core Skills |
 | ----- | ----- | ----- |
-| Day 2 | Baseline Detection | KQL, log ingestion, XML parsing, simple rule tuning |
-| Day 3 | Kill Chain Triage | MITRE correlation, alert chaining, SOC workflows |
-| Day 4 | SOAR Enrichment Workflow | Logic App design, VirusTotal API, noise suppression |
+| Phase 2 | Baseline Detection | KQL, log ingestion, XML parsing, simple rule tuning |
+| Phase 3 | Kill Chain Triage | MITRE correlation, alert chaining, SOC workflows |
+| Phase 4 | SOAR Enrichment Workflow | Logic App design, VirusTotal API, noise suppression |
 
 Each write-up includes:
 
