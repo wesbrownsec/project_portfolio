@@ -1,4 +1,4 @@
-# **Day 1: Lab Environment and Logging Setup**
+# **Phase 1: Lab Environment and Logging Setup**
 
 ## **Overview**
 
