@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-This project simulates a progressive detection engineering and incident response workflow using Microsoft Sentinel. Spanning three phases — from baseline detection to triage of a chained attack, to SOAR-driven alert enrichment — it demonstrates the mindset and skillset required in a modern SOC environment.
+This project simulates a progressive detection engineering and incident response workflow using Microsoft Sentinel. Spanning three phases - from baseline detection to triage of a chained attack, to SOAR-driven alert enrichment, it demonstrates the mindset and skillset required in a modern SOC environment.
 
 Rather than showcasing one-off detections or synthetic labs, this project presents a structured progression:
 
