@@ -10,7 +10,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Microsoft Sentinel and Logic Apps  
 **Focus:** Detection Engineering and Automation  
 **Skills:** KQL, MITRE T1218.010, API integration (VirusTotal), SOAR logic  
-**[Write-up →](sentinel__detection_projects/day4_regsvr32_soar/README.md)**
+**[Write-up →](/sentinel__detection_projects/phase4_regsvr32_soar/README.md)**
 
 - Developed a full SOAR pipeline for detecting regsvr32 abuse with integrated alert enrichment using VirusTotal.
 - Designed branching logic to escalate only high-confidence alerts, reducing false positives and analyst workload.
@@ -22,7 +22,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Microsoft Sentinel  
 **Focus:** Multi-stage Attack Simulation  
 **Skills:** Custom KQL detections, MITRE T1003.001, T1053.005, T1105  
-**[Write-up →](sentinel__detection_projects/day3_attack_chain/README.md)**
+**[Write-up →](/sentinel__detection_projects/phase3_attack_chain/README.md)**
 
 - Simulated an end-to-end attack chain using certutil for tool download, schtasks for persistence, and procdump for LSASS dumping.
 - Created individual detections for each stage and manually correlated them into a single incident timeline.
@@ -34,7 +34,7 @@ This portfolio showcases my practical experience in threat detection, incident r
 **Platform:** Splunk with Sysmon logs and VirusTotal  
 **Focus:** Full-Spectrum SOC Investigation  
 **Skills:** SPL, IOC enrichment, MITRE ATT&CK mapping, infrastructure attribution  
-**[Write-up →](splunk_investigations/botsv1_investigation/botsv1_compromise_analysis.md)**
+**[Write-up →](/splunk_investigations/botsv1_investigation/botsv1_compromise_analysis.md)**
 
 - Investigated a simulated attack involving vulnerability scanning, brute-force login, malware upload, and host compromise.
 - Mapped attacker actions to MITRE stages and used OSINT tools to trace external infrastructure.
