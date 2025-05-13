@@ -1,134 +1,76 @@
-# **Full-Stack Detection and Response with Microsoft Sentinel**
+# **Microsoft Sentinel Detection & Automation Project**
 
 ## **Overview**
 
-This project simulates a progressive detection engineering and incident response workflow using Microsoft Sentinel. Spanning three phases - from baseline detection to triage of a chained attack, to SOAR-driven alert enrichment, it demonstrates the mindset and skillset required in a modern SOC environment.
+This project was designed to simulate real-world SOC workflows using Microsoft Sentinel, enabling me to understand the end-to-end lifecycle of detection, triage, and automated enrichment. After completing more guided investigations, I wanted to independently build a realistic environment that mimicked the key elements of a modern SOC: telemetry ingestion, detection logic creation, alert tuning, and basic SOAR implementation. The project helped bridge the gap in foundational infrastructure knowledge that many analysts with a helpdesk background might already have, while also pushing deeper into security-specific tooling and reasoning.
 
-Rather than showcasing one-off detections or synthetic labs, this project presents a structured progression:
+## **Objectives**
 
-* **Phase 1**: Lab configuration and Sentinel log ingestion.
+This was more than a lab setup — it was a full learning environment aimed at:
 
-* **Phase 2**: Foundational hands-on with Sentinel, raw log parsing, and alert building
+* Gaining fluency in **KQL**, with an emphasis on parsing and filtering imperfect logs
 
-* **Phase 3**: Multi-stage attack simulation and SOC-style investigation
+* Building and tuning **custom detections** across a multi-stage attack chain
 
-* **Phase 4**: Enrichment and triage automation using SOAR workflows
+* Designing a realistic **SOAR automation** using Logic Apps and VirusTotal
 
-This work is designed to reflect the tasks and thinking expected from a detection engineer or Level 1/2 SOC analyst—not a hobbyist or red teamer.
+* Thinking through **incident response logic**: what data matters, what to escalate, and what can be suppressed
 
----
+* Simulating Tier 1/2 **SOC workflows** rather than simply running queries
 
-## **Repository Structure**
+## **Project Structure**
 
-```
-/sentinel-detection-project/
-├── README.md                      # Project overview, objectives, skills demonstrated
-├── phase1_lab_configuration.md      # Outline of the lab environment
-├── phase2_procdump_detection/
-│   ├── README.md                  # Baseline detection: Procdump → LSASS
-│   └── detection.kql              # Raw KQL query for the rule
-├── phase3_attack_chain/
-│   ├── README.md                  # Multi-stage triage: Certutil → Schtasks → Procdump
-│   └── detection.kql              # Detection logic used in investigation
-├── phase4_regsvr32_soar/
-│   ├── README.md                  # SOAR enrichment workflow: Regsvr32 + VirusTotal
-│   ├── detection.kql              # Trigger rule for the Logic App
-│   ├── logic_app_diagram.png      # Diagram of the SOAR branching logic
-│   └── logicapp.json              # Logic App export (infrastructure-as-code)
-```
+* **Phase 1:** Lab setup — VM configuration, log ingestion via MMA agent
 
----
+* **Phase 2:** Initial single-stage detection using KQL
 
-## **Project Objectives**
+* **Phase 3:** Multi-stage attack simulation using LOLBins (e.g., `certutil`, `schtasks`, `procdump`), including custom detections and tuning
 
-* Develop high-signal, low-noise detections using KQL and MITRE mapping
+* **Phase 4:** SOAR enrichment — using Logic Apps to parse alert content, enrich with VirusTotal API, and tag severity for analyst consumption
 
-* Simulate realistic post-exploitation scenarios involving credential dumping and persistence
+This structure reflects my incremental learning approach, where each phase builds on the previous one and increases in complexity. While Phase 1 and 2 are basic, they lay the groundwork. Phases 3 and 4 focus on real detection engineering, triage thinking, and automation — the heart of modern SOC operations.
 
-* Apply SOC analyst triage methods to correlated alerts
+## **Key Tools & Techniques**
 
-* Build and document a full SOAR workflow that enriches alerts and supports automated triage
+* **Microsoft Sentinel:** SIEM platform for ingestion, detection, and incident creation
 
----
+* **KQL (Kusto Query Language):** Used to write all detections, including parsing raw XML for command-line activity
 
-## **Key Capabilities Demonstrated**
+* **Logic Apps Designer:** Used to implement automation workflows, with branching logic and JSON-based parsing
 
-| Phase | Focus | Core Skills |
-| ----- | ----- | ----- |
-| Phase 2 | Baseline Detection | KQL, log ingestion, XML parsing, simple rule tuning |
-| Phase 3 | Kill Chain Triage | MITRE correlation, alert chaining, SOC workflows |
-| Phase 4 | SOAR Enrichment Workflow | Logic App design, VirusTotal API, noise suppression |
+* **VirusTotal API:** Used for IOC enrichment and severity tagging
 
-Each write-up includes:
+* **Email Connector:** Configured to send enriched alerts to analysts with relevant fields (e.g., command line, parent process)
 
-* Detection logic and rationale
+* **MMA Agent & VM Setup:** Simulated log ingestion from a Windows host with imperfect data
 
-* Analyst triage actions
+## **SOC-Relevant Workflows**
 
-* MITRE ATT\&CK mapping
+The following aspects of the project replicate common SOC analyst responsibilities:
 
-* Reflection and opportunities for improvement
+* **Detection tuning**: Filtering benign uses of tools like `certutil`, `regsvr32`, and `procdump` based on context
 
----
+* **Alert enrichment**: Using external threat intel (VirusTotal) to add decision-making context
 
-## **Tools and Technologies**
+* **False positive management**: Adjusting KQL filters to reduce noise and improve detection signal
 
-* Microsoft Sentinel (SIEM \+ SOAR)
+* **Response classification**: Using Logic Apps to route alerts as either `ALERT` or `INFO` based on enrichment outcome
 
-* Azure Log Analytics (via Microsoft Monitoring Agent)
+* **Incident simulation**: Correlating events across timestamps, users, and artifacts to simulate real-world triage
 
-* Kusto Query Language (KQL)
+## **Lessons Learned**
 
-* Logic Apps (SOAR automation)
+* **Parsing challenges:** Raw XML logs required precise field extraction in KQL — a valuable skill when working with inconsistent data sources
 
-* VirusTotal API (IP enrichment)
+* **Detection refinement:** My initial `procdump` query falsely relied on `lsass` appearing in command-line logs; had to update it after observing false negatives in scheduled task usage
 
----
+* **Automation logic:** Logic Apps debugging taught me how to extract fields buried in nested alert payloads (e.g., `ExtendedProperties`) using both UI and code views
 
-## **Skills Highlighted**
+* **Analyst mindset shift:** This project forced me to think like an analyst — not just “what data can I extract,” but “why does this matter to triage?”
 
-* Parsing and interpreting raw XML logs (Event ID 1\)
-
-* Building detections mapped to MITRE TTPs
-
-* Designing correlation-based triage workflows
-
-* Using SOAR to enrich alerts and reduce false positives
-
-* Handling real-world constraints like noisy data and incomplete telemetry
-
-* Planning for alert fatigue and automation failure conditions
-
----
-
-## **Lab Constraints and Assumptions**
-
-This project prioritises realistic SOC workflows over red teaming or evasion. Some trade-offs:
-
-* Used Microsoft Monitoring Agent (MMA) — no AMA or SecurityEvents (Event ID 4688\)
-
-* No EDR or DNS telemetry — focused on process creation logs only
-
-* IP-based enrichment only — file hash integration noted as future work
-
-* All detections triggered in a safe, isolated lab VM
-
----
-
-## **Future Improvements**
-
-* Hash extraction and file reputation scoring
-
-* Integration with Microsoft Defender for Endpoint
-
-* Secondary enrichment source (e.g. AbuseIPDB) for fault tolerance
-
-* Suppression logic for known-good behaviour
-
-* MITRE coverage dashboard or visual heatmap
-
----
+* **Solo blind spots:** Since I was testing my own alerts against my own attacks, I recognised the risk of blind spots and echo chambers — something I’d address with peer review in a real SOC
 
 ## **Summary**
 
-This project demonstrates more than technical competence—it shows applied judgement. From initial detection through to automated triage and contextual enrichment, each component is built with operational reality in mind. The work reflects not just the ability to write queries, but the ability to think like a defender: detecting, correlating, and responding to adversary behaviour with clarity and control.
+This project isn't just about setting up a SIEM — it's about simulating the reality of security operations. From ingesting noisy logs to crafting high-fidelity alerts and enriching them with automation, I built a hands-on workflow that reflects actual Tier 1/2 SOC duties. Each step — from VM setup to email enrichment — pushed me to think operationally, not just technically.
+
