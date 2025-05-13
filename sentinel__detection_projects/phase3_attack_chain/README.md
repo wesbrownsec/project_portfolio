@@ -1,113 +1,119 @@
-# **Phase 3: Simulated Incident – Credential Dump via LOLBins and Scheduled Task**
+# **Phase 3 – Multi-Stage Attack Detection (Microsoft Sentinel)**
+
+## **Overview**
+
+This phase focused on simulating a realistic, multi-stage attack using native Windows tools to reflect a common post-compromise scenario in enterprise environments. The goal was to:
+
+* Simulate attacker activity using LOLBins (Living Off the Land Binaries)
+
+* Create custom KQL detections across each stage of the attack
+
+* Extract and enrich relevant fields for triage
+
+* Tune detections to reduce false positives and negatives
+
+* Correlate alerts across time, user, and system context
+
+Compared to Phase 2's single-stage detection, this phase introduced correlation logic and higher fidelity filtering to better reflect actual SOC workflows.
+
+## **Simulated Attack Chain**
+
+A three-stage attack chain was executed:
+
+1. **Command & Control**
+
+   * `certutil.exe` used to download `procdump.exe` from internal host
+
+   * **MITRE T1105 – Ingress Tool Transfer**
+
+2. **Persistence**
+
+   * A scheduled task created via `schtasks.exe` to launch `procdump.exe` at user login
+
+   * **MITRE T1053.005 – Scheduled Task / Job: Logon Trigger**
+
+3. **Credential Dumping**
+
+   * On next login, `procdump.exe` dumps LSASS memory
+
+   * **MITRE T1003.001 – OS Credential Dumping: LSASS Memory**
+
+Each stage was logged via process execution events (Event ID 1), parsed from raw XML in Sentinel, and detected via tailored KQL queries.
+
+## **Detection Logic**
+
+All detections were built using manual parsing of XML fields from `EventData`, using regular expressions to extract key elements (Image, CommandLine, ParentImage, User, IntegrityLevel).
+
+### ** `certutil` Detection**
+
+* **Initial Logic**: Match on Image field containing `certutil`
+
+* **Tuning**: Added filter on CommandLine containing `http` to detect outbound transfer activity and reduce false positives
+
+* **Key Fields for Correlation**: `User`, `TimeGenerated`, `IntegrityLevel`
+
+### ** `schtasks` Detection**
+
+* **Initial Logic**: Match on Image containing `schtasks.exe`
+
+* **Tuning**: Added filter for ParentImage (`powershell.exe`, `cmd.exe`) and CommandLine (`create`) to isolate suspicious task creation from legitimate system behaviour
+
+* **Key Fields for Triage**: `CommandLine`, `ParentImage`, `User`
+
+### ** `procdump` Detection**
+
+* **Initial Logic**: Match on Image containing `procdump`, and CommandLine containing `lsass`
+
+* **Tuning**: Removed `lsass` requirement after discovering that scheduled task execution didn’t include it in CommandLine, which caused false negatives
+
+* **Tradeoff**: Broader detection increased false positive risk slightly, but use of `procdump` remains rare and high risk, justifying wider scope
+
+## **Analyst Perspective & Reasoning**
+
+* **Prioritisation**: All three detections were evaluated for context and privilege level. `procdump` was weighted highest due to credential access.
+
+* **Suppressions**: Scheduled task alerts required tuning to avoid system noise; benign uses by administrators may require whitelisting in production.
+
+* **Escalation Criteria**: Any alert for `procdump` execution under elevated integrity was considered high severity.
+
+## **Response Workflow (Simulated Triage)**
+
+If all three alerts fired:
+
+1. **Certutil**: Check outbound IP, validate download behaviour, run IOC through VirusTotal
+
+2. **Scheduled Task**: Confirm creation time, verify user, list existing tasks
+
+3. **Procdump**: Investigate for LSASS dump artifacts, correlate with login events, assess exfiltration potential
+
+## **Technical Constraints & Workarounds**
+
+* **Log Gaps**: No security logs available (e.g., 4624 for logon, 4698 for task creation), which limited correlation depth
+
+* **Raw XML Parsing**: Required custom KQL parsing via regex to extract fields, increasing query complexity
+
+* **Detection Blind Spots**: Initial detection logic for `procdump` was too narrow - fixed via broader CommandLine coverage
+
+## **Lessons Learned**
+
+* **Detection tuning is non-trivial**: Even small context changes (scheduled task vs manual execution) can break alerts
+
+* **Real logs are messy**: Event content varies and requires flexible parsing strategies
+
+* **Correlation is key**: Individual alerts mean little without context - timestamps, user, and integrity level matter
+
+* **Thinking like an analyst**: This phase forced me to consider what information actually aids triage - not just what can be logged
+
+## **Improvements for Real SOC Use**
+
+* Add more log sources (e.g., file creation, task modification, logon events)
+
+* Use IntegrityLevel to drive SOAR severity tiering (e.g., low/medium/high)
+
+* Extract contacted IP and downloaded file from `certutil`, enrich via VirusTotal automatically
+
+* Expand parent-child process chain tracking to confirm abuse patterns
 
 ---
 
-**Executive Summary**
-
-This simulated incident demonstrates a chained attack scenario where an adversary uses native Windows binaries to download a credential dumping tool, persist it via a scheduled task, and execute it at logon. The aim is to mimic low-sophistication, high-success-rate post-exploitation tradecraft - and simulate how a SOC analyst would detect, investigate, and respond to it.
-
----
-
-**Incident Overview: Attacker Behaviour**
-
-| Step | Adversary Action | MITRE Technique |
-| :---- | :---- | :---- |
-| 1 | Used certutil.exe to download procdump.exe from an internal IP | T1105 – Ingress Tool Transfer |
-| 2 | Created a scheduled task to launch procdump.exe at logon | T1053.005 – Scheduled Task |
-| 3 | On next login, the task executed, and procdump.exe dumped LSASS memory | T1003.001 – Credential Dumping (LSASS) |
-
-This pattern reflects a common kill chain used in real environments where:
-
-* Admin tools are abused for stealth  
-* Persistence is automated  
-* Credential harvesting is delayed until reentry (e.g., next login)
-
----
-
-**Detection Timeline**
-
-| Time | Alert | Description |
-| :---- | :---- | :---- |
-| 10:12 | Certutil Download Detected | Tool transfer from 192.168.1.80 to local host |
-| 10:29 | Scheduled Task Created | Persistence setup to trigger payload |
-| 10:39 | Procdump Executed | Task fired post-login, indicating successful credential access |
-
----
-
-**Alert 1: Tool Ingress via certutil.exe (T1105)**
-
-**What Happened**:  
- The attacker used certutil.exe to fetch procdump.exe from a remote host over HTTP.
-
-**Why It Mattered**:  
- This is a high-signal behaviour. certutil is rarely used interactively, especially by users without admin context. Its use suggests deliberate staging.
-
-**Analyst Action**:
-
-* Check user identity (redteam) and logon source  
-* Use VirusTotal or internal IOC sources to assess 192.168.1.80  
-* Confirm file write activity (e.g., was procdump.exe saved to disk?)
-
----
-
-**Alert 2: Scheduled Task Creation via schtasks.exe (T1053.005)**
-
-**What Happened**:  
- Roughly 15 minutes later, the attacker created a scheduled task using schtasks.exe, launched from PowerShell.
-
-**Why It Mattered**:  
- This shows intent to persist the payload beyond the current session — a classic lateral movement and privilege escalation setup.  
- It was executed from a shell (not a system task or installer), increasing suspicion.
-
-**Analyst Action**:
-
-* Review task name and command path  
-* Confirm user context and whether UAC bypass was attempted  
-* Look for other tasks created during the session  
-* Cross-reference logon ID if available
-
----
-
-**Alert 3: Procdump Execution Triggered (T1003.001)**
-
-**What Happened**:  
- At next logon, the scheduled task executed procdump.exe. It did **not** contain lsass in the command line - suggesting obfuscation or indirection.
-
-**Why It Mattered**:  
- Dumping LSASS without direct command-line indicators is a real-world tactic used to bypass basic rules. This required correlation with previous steps to confirm malicious behaviour.
-
-**Analyst Action**:
-
-* Confirm creation of .dmp files (e.g., C:\\Users\\...\\procdump.dmp)  
-* Inspect outbound traffic (did anything attempt to exfil data?)  
-* Check process ancestry — was procdump launched by a system process?
-
----
-
-**Analyst Conclusion**
-
-This incident reflects **intentional attacker movement across the kill chain**:
-
-* Stage → Persist → Harvest  
-* Tools: Native binaries (certutil, schtasks, procdump)  
-* Strategy: Minimal direct indicators, maximum plausible deniability
-
-Even though each action could be benign in isolation, **correlation and timing** show that:
-
-* The same user (redteam) performed each action  
-* Each alert aligns with expected attacker logic  
-* No system maintenance or admin tooling justifies this pattern
-
----
-
-**Outcome**
-
-All three custom Sentinel rules triggered successfully and were **manually correlated** into a single incident.
-
-This simulation demonstrated:
-
-* High-signal detections using minimal tuning  
-* Attacker behavior across MITRE stages  
-* Triage workflows matching realistic SOC escalation paths
-
- 
+This phase represents a major shift from basic detection to true incident simulation. It reflects the type of alert crafting and tuning Tier 1–2 analysts perform to make sense of noisy data and detect serious threats like credential dumping chains.
