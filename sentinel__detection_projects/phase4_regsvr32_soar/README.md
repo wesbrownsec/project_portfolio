@@ -18,7 +18,7 @@ This phase explored SOAR (Security Orchestration, Automation, and Response) inte
 
 ## **Workflow Summary**
 
-1. A KQL detection triggers on suspicious use of `regsvr32.exe` contacting an external IP via HTTP
+1. A KQL detection triggers on suspicious use of `regsvr32.exe` (T1218.010) contacting an external IP via HTTP
 
 2. Sentinel creates an incident and triggers a Logic App
 
