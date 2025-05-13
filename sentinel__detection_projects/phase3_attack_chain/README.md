@@ -25,6 +25,8 @@ A three-stage attack chain was executed:
    * `certutil.exe` used to download `procdump.exe` from internal host
 
    * **MITRE T1105 – Ingress Tool Transfer**
+  
+   * [Certutil Use alert](/sentinel__detection_projects/phase3_attack_chain/screenshots/certutil_alert.PNG)
 
 2. **Persistence**
 
@@ -32,11 +34,15 @@ A three-stage attack chain was executed:
 
    * **MITRE T1053.005 – Scheduled Task / Job: Logon Trigger**
 
+    * [Malicious Scheduled Task alert](/sentinel__detection_projects/phase3_attack_chain/screenshots/malicious_scheduled_task.PNG)
+
 3. **Credential Dumping**
 
    * On next login, `procdump.exe` dumps LSASS memory
 
    * **MITRE T1003.001 – OS Credential Dumping: LSASS Memory**
+
+    * [Credential Dumping alert](/sentinel__detection_projects/phase3_attack_chain/screenshots/credential_dumping_alert.PNG)
 
 Each stage was logged via process execution events (Event ID 1), parsed from raw XML in Sentinel, and detected via tailored KQL queries.
 
