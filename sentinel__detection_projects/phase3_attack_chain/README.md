@@ -122,4 +122,4 @@ If all three alerts fired:
 
 ---
 
-This phase represents a major shift from basic detection to true incident simulation. It reflects the type of alert crafting and tuning Tier 1–2 analysts perform to make sense of noisy data and detect serious threats like credential dumping chains.
+This phase represents a major shift from basic detection to true incident simulation. This phase simulated the kind of detection refinement process common in Tier 1–2 SOC environments.
