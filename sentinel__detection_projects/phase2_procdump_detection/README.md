@@ -6,7 +6,7 @@ This was my first hands-on experience building a detection rule in Microsoft Sen
 
 **Objective**
 
-To simulate a simple but realistic post-exploitation technique — credential dumping from lsass.exe using procdump.exe — and build a custom detection in Sentinel using raw event logs. This attack corresponds to **MITRE ATT\&CK T1003.001: OS Credential Dumping – LSASS Memory**.
+To simulate a simple but realistic post-exploitation technique — credential dumping from lsass.exe using procdump.exe — and build a custom detection in Sentinel using raw event logs. This attack corresponds to **MITRE ATT &CK T1003.001: OS Credential Dumping – LSASS Memory**.
 
 ---
 
@@ -23,13 +23,13 @@ The rule searches for executions of procdump.exe with command-line arguments ref
 
 ```kql
 Event
-| where EventID \== 1
-| extend raw\_xml \= tostring(EventData)
+| where EventID  == 1
+| extend raw_xml  = tostring(EventData)
 | extend
-	Image \= extract(@"\<Data Name=""Image""\>(.\*?)\</Data\>", 1, raw\_xml),
-	CommandLine \= extract(@"\<Data Name=""CommandLine""\>(.\*?)\</Data\>", 1, raw\_xml),
-	ParentImage \= extract(@"\<Data Name=""ParentImage""\>(.\*?)\</Data\>", 1, raw\_xml),
-	User \= extract(@"\<Data Name=""User""\>(.\*?)\</Data\>", 1, raw\_xml)
+	Image = extract(@" <Data Name=""Image"">(.*?)</Data >", 1, raw_xml),
+	CommandLine = extract(@ <Data Name=""CommandLine"">(.*?) <Data>", 1, raw_xml),
+	ParentImage = extract(@"<Data Name=""ParentImage"">(.*?) <Data>", 1, raw_xml),
+	User = extract(@"<Data Name=""User"">(.*?)</Data>", 1, raw_xml)
 | where Image has "procdump" and CommandLine has "lsass"
 | project TimeGenerated, Image, CommandLine, ParentImage, User
 ```
@@ -40,7 +40,7 @@ Event
 * **Schedule**: Every 5 minutes (15-minute lookback)  
 * **Severity**: High  
 * **Tactic**: Credential Access  
-* **Trigger Threshold**: \> 0 results  
+* **Trigger Threshold**:  > 0 results  
 * **Incident Creation**: Enabled
 
 Credential dumping is often performed quickly during post-exploitation, so a short lookback interval was chosen to minimize alert latency. Since legitimate use of procdump against lsass.exe is virtually nonexistent in production environments, the rule is tuned for **high signal and low false positives**.
