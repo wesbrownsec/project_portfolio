@@ -135,4 +135,14 @@ A simulated intrusion was detected on a Windows host via Microsoft Sentinel, inv
 | Execution | T1105 (Ingress Tool Transfer) | certutil.exe download |
 | Discovery | T1087 (Account Discovery), T1016 (System Network Configuration Discovery) | whoami, ipconfig |
 
-																																																																																																																																																										
+---
+
+*Author’s Note*
+
+This investigation was performed in a home lab environment, utilizing a single Windows endpoint as the victim system. Due to the limited scope and volume of activity in the lab, the detection logic implemented in Microsoft Sentinel leveraged broad KQL queries designed to capture a wide range of events (e.g., process creation, file modification, registry changes, LOLBin usage) with minimal filtering.
+
+In an enterprise SOC setting, detection content would typically be far more granular and context-specific, correlating telemetry across multiple hosts, user accounts, and network segments. Playbooks would leverage asset baselining, alert suppression logic, and advanced correlation to minimize false positives and prioritize high-fidelity detections.
+
+The investigative process documented here reflects best practices for incident triage, validation, and response. However, due to the controlled lab environment, some investigative steps (such as comprehensive lateral movement hunting or deep network forensics) were either simulated or described as “recommended steps,” rather than executed with live data.
+
+If required, I can provide example KQL detection rules used in this investigation, discuss how these would be adapted for a production environment, or elaborate on ways to scale detection and response in larger organizations.
