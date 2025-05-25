@@ -54,7 +54,7 @@ This phase explored SOAR (Security Orchestration, Automation, and Response) inte
 
   * `ELSE` → Send low-priority info email
 
-[View Logic App Workflow PDF](/sentinel__detection_projects/phase4_regsvr32_soar/logic_app_success.pdf)
+[View Logic App Workflow PDF](/sentinel_projects/sentinel_foundations/phase4_regsvr32_soar/logic_app_success.pdf)
 
 **Email Output (ALERT)**:
 
@@ -76,7 +76,7 @@ Recommended Actions:
 \- Review traffic to the contacted IP  
 \- Isolate the host if confirmed
 
-[View sent email alert](/sentinel__detection_projects/phase4_regsvr32_soar/email_alert.PNG)
+[View sent email alert](/sentinel_projects/sentinel_foundations/phase4_regsvr32_soar/email_alert.PNG)
 
 
 ## **Technical Implementation**
