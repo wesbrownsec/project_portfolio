@@ -33,39 +33,13 @@ A simulated intrusion was detected on a Windows host via Microsoft Sentinel, inv
 
 ## **Investigation Steps / Evidence Review**
 
-* **Certutil Download (Alert 151):**
+| Investigation Steps / Evidence Review | Screenshot |
+|--------------------------------------|------------|
+| **Certutil Download (Alert 151):**<br><br>*To confirm:* Review command-line logs for certutil usage with `-urlcache`; check Sysmon Event ID 11 (FileCreate) to confirm file presence.<br><br>*Validation:* Compare the file hash of downloaded procdump.exe with official Sysinternals hash.<br><br>*Additional:* Check proxy/network logs for outbound connections to the download source. | ![Certutil Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/certutil_urlcache_alert_details.PNG) |
+| **Procdump Test (Alert 149):**<br><br>*To confirm:* Examine process creation logs for procdump.exe targeting notepad.exe. Confirm creation and quick deletion of notepad.dmp (Event ID 4660).<br><br>*Rationale:* Tool testing is a common attacker TTP to evade controls or test permissions. | ![Procdump test Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/procdump_notepad_alert_details.PNG) |
+| **Procdump LSASS Dump (Alert 155):**<br><br>*To confirm:* Search process creation logs for procdump.exe with `-ma lsass.exe`; validate presence and integrity of lsass_dump.dmp in filesystem logs.<br><br>*Check for exfiltration:* Review recent network traffic for potential transfer of lsass_dump.dmp. | ![Procdump lsass Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/procdump_lsass_alert_details.PNG) |
+| **Registry Persistence (Alert 154):**<br><br>*To confirm:* Query endpoint event logs for new/modified RunKey entries in HKCU/HKLM for procdump.exe.<br><br>*Verify persistence:* Review boot sequence logs for procdump.exe launches after registry change. | ![registry key Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/registry_persistance_alert_details.PNG) |
 
-  * *To confirm:* Review command-line logs for certutil usage with \-urlcache; check Sysmon Event ID 11 (FileCreate) to confirm file presence.
-
-  * *Validation:* Compare the file hash of downloaded procdump.exe with official Sysinternals hash.
-
-  * *Additional:* Check proxy/network logs for outbound connections to the download source.
-
-![Certutil Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/certutil_urlcache_alert_details.PNG)
-
-* **Procdump Test (Alert 149):**
-
-  * *To confirm:* Examine process creation logs for procdump.exe targeting notepad.exe. Confirm creation and quick deletion of notepad.dmp (Event ID 4660).
-
-  * *Rationale:* Tool testing is a common attacker TTP to evade controls or test permissions.
-
-![Procdump test Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/procdump_notepad_alert_details.PNG)
-
-* **Procdump LSASS Dump (Alert 155):**
-
-  * *To confirm:* Search process creation logs for procdump.exe with \-ma lsass.exe; validate presence and integrity of lsass\_dump.dmp in filesystem logs.
-
-  * *Check for exfiltration:* Review recent network traffic for potential transfer of lsass\_dump.dmp.
-
-![Procdump lsass Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/procdump_lsass_alert_details.PNG)
-
-* **Registry Persistence (Alert 154):**
-
-  * *To confirm:* Query endpoint event logs for new/modified RunKey entries in HKCU/HKLM for procdump.exe.
-
-  * *Verify persistence:* Review boot sequence logs for procdump.exe launches after registry change.
-
-![registry key Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/registry_persistance_alert_details.PNG)
 
 * **Certutil Encode (Alert 150):**
 
