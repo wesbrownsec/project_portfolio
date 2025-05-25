@@ -6,13 +6,15 @@ A simulated intrusion was detected on a Windows host via Microsoft Sentinel, inv
 
 ## **Alert Queue & Triage Table**
 
+![Alert Queue](/sentinel_projects/soc_case_studies/credential_theft/screenshots/sentinel_alert_queue.PNG)
+
 | Alert | Description | Severity | Initial Assessment |
 | ----- | ----- | ----- | ----- |
 | 154 | Registry RunKey Persistence | High | Rare in normal ops, likely attacker persistence (T1547.001) |
 | 155 | Procdump.exe (lsass dump) | High | Cred dumping (T1003.001), major risk |
 | 149 | Procdump.exe (notepad dump) | Medium | Likely tool testing, non-baseline process |
 | 151 | Certutil.exe download | Medium | Suspicious, possible LOLBin malware ingress (T1105) |
-| 150 | Certutil.exe encode (FP) | Low | Benign admin task, confirmed by source/context |
+| 150 | Certutil.exe encode (FP) | Medium | Benign admin task, confirmed by source/context |
 | Other | Whoami, ipconfig, wmic, schtasks | Low | Recon commands—potentially attacker recon, context-dependent |
 
 ---
@@ -39,11 +41,15 @@ A simulated intrusion was detected on a Windows host via Microsoft Sentinel, inv
 
   * *Additional:* Check proxy/network logs for outbound connections to the download source.
 
+![Certutil Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/certutil_urlcache_alert_details.PNG)
+
 * **Procdump Test (Alert 149):**
 
   * *To confirm:* Examine process creation logs for procdump.exe targeting notepad.exe. Confirm creation and quick deletion of notepad.dmp (Event ID 4660).
 
   * *Rationale:* Tool testing is a common attacker TTP to evade controls or test permissions.
+
+![Procdump test Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/procdump_notepad_alert_details.PNG)
 
 * **Procdump LSASS Dump (Alert 155):**
 
@@ -51,11 +57,15 @@ A simulated intrusion was detected on a Windows host via Microsoft Sentinel, inv
 
   * *Check for exfiltration:* Review recent network traffic for potential transfer of lsass\_dump.dmp.
 
+![Procdump lsass Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/procdump_lsass_alert_details.PNG)
+
 * **Registry Persistence (Alert 154):**
 
   * *To confirm:* Query endpoint event logs for new/modified RunKey entries in HKCU/HKLM for procdump.exe.
 
   * *Verify persistence:* Review boot sequence logs for procdump.exe launches after registry change.
+
+![registry key Alert](/sentinel_projects/soc_case_studies/credential_theft/screenshots/registry_persistance_alert_details.PNG)
 
 * **Certutil Encode (Alert 150):**
 
