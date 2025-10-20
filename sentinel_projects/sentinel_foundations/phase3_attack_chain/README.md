@@ -50,7 +50,7 @@ Each stage was logged via process execution events (Event ID 1), parsed from raw
 
 All detections were built using manual parsing of XML fields from `EventData`, using regular expressions to extract key elements (Image, CommandLine, ParentImage, User, IntegrityLevel).
 
-### ** `certutil` Detection**
+### **`certutil` Detection**
 
 * **Initial Logic**: Match on Image field containing `certutil`
 
@@ -58,7 +58,7 @@ All detections were built using manual parsing of XML fields from `EventData`, u
 
 * **Key Fields for Correlation**: `User`, `TimeGenerated`, `IntegrityLevel`
 
-### ** `schtasks` Detection**
+### **`schtasks` Detection**
 
 * **Initial Logic**: Match on Image containing `schtasks.exe`
 
@@ -66,7 +66,7 @@ All detections were built using manual parsing of XML fields from `EventData`, u
 
 * **Key Fields for Triage**: `CommandLine`, `ParentImage`, `User`
 
-### ** `procdump` Detection**
+### **`procdump` Detection**
 
 * **Initial Logic**: Match on Image containing `procdump`, and CommandLine containing `lsass`
 
