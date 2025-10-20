@@ -2,7 +2,7 @@
 
 ## **Overview**
 
-Before developing detections or response workflows, I built a dedicated lab environment to simulate post-exploitation behaviour, collect relevant telemetry, and validate end-to-end visibility within Microsoft Sentinel. This setup prioritised simplicity, repeatability, and operational realism — not full-scale emulation or red teaming.
+Before developing detections or response workflows, I built a dedicated lab environment to simulate post-exploitation behaviour, collect relevant telemetry, and validate end-to-end visibility within Microsoft Sentinel. This setup prioritised simplicity, repeatability, and operational realism - not full-scale emulation or red teaming.
 
 The goal was to simulate **realistic attacker behaviour using native Windows tools**, ingest those events into Sentinel, and use them to construct high-signal, actionable detections and response workflows.
 
